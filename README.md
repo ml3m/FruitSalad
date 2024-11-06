@@ -1,7 +1,3 @@
-Here's the full documentation to accompany the provided code, organized as per your homework requirements.
-
----
-
 # FruitSalad - Programming Homework Documentation
 
 ## Overview
