@@ -1,0 +1,339 @@
+public interface Peelable {
+    boolean hasPeel();
+    void peelOff();
+}
+public enum FruitColor {
+    RED, YELLOW, PURPLE, GREEN, ORANGE
+}public interface SeedRemovable {
+    boolean hasSeeds();
+    void removeSeeds();
+}
+import java.io.InputStream;
+import java.util.Scanner;
+
+public class InputDevice {
+    private InputStream inputStream;
+    private Scanner scanner;
+
+    public InputDevice(InputStream inputStream) {
+        this.inputStream = inputStream;
+        this.scanner = new Scanner(inputStream);
+    }
+
+    public String readLine() {
+        return scanner.nextLine();
+    }
+
+    public void close() {
+        scanner.close();
+    }
+}
+import java.io.IOException;
+import java.io.OutputStream;
+
+public class OutputDevice {
+    private OutputStream outputStream;
+
+    public OutputDevice(OutputStream outputStream) {
+        this.outputStream = outputStream;
+    }
+
+    public void write(String data) {
+        try {
+            outputStream.write(data.getBytes());
+            outputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // For closing the output stream when done
+    public void close() {
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+//import java.io.FileInputStream;
+//import java.io.FileOutputStream;
+//import java.io.IOException;
+//import java.util.Random;
+//import java.util.Scanner;
+
+public class Main {
+
+    /*
+    public static double computeWeight(Fruit[] fruits) {
+        double totalWeight = 0;
+        for (Fruit fruit : fruits) {
+            totalWeight += fruit.getWeight();
+        }
+        return totalWeight;
+    }
+     */
+
+    /*
+    public static double computeSugarContent(Fruit[] fruits) {
+        double totalSugarContent = 0;
+        for (Fruit fruit : fruits) {
+            totalSugarContent += (fruit.getWeight() * (fruit.getSugarContent() / 100));
+        }
+        return totalSugarContent;
+    }
+    */
+    public static void main(String[] args) {
+        Fruit[] fruits = {
+                new Apple(150, 10, 85, FruitColor.RED),
+                new Banana(120, 12, 80),
+                new Mango(200, 15, 70),
+                new Apple(130, 8, 86, FruitColor.GREEN)
+        };
+
+        // Demonstrate sorting and grouping functionality
+        FruitPreparation.sortFruitsByWeight(fruits);
+        System.out.println();
+
+        FruitPreparation.sortFruitsBySugarContent(fruits);
+        System.out.println();
+
+        FruitPreparation.groupFruitsByColor(fruits);
+    }
+
+    /*
+    public static void askUserForFile(InputDevice inputDevice, OutputDevice outputDevice) {
+        while (true) {
+            outputDevice.write("Enter the name of the file to read: ");
+            String fileName = inputDevice.readLine();
+
+            try (FileInputStream fileInputStream = new FileInputStream(fileName)) {
+                Scanner fileScanner = new Scanner(fileInputStream);
+                while (fileScanner.hasNextLine()) {
+                    outputDevice.write(fileScanner.nextLine() + "\n");
+                }
+                fileScanner.close();
+                break; 
+            } catch (IOException e) {
+                outputDevice.write("Error reading file. Please try another file.\n");
+            }
+        }
+    }*/
+
+
+    /*public static void writeRandomNumbers(InputDevice inputDevice, OutputDevice outputDevice) {
+        Random random = new Random();
+
+        while (true) {
+            outputDevice.write("Enter the name of the file to write random numbers: ");
+            String fileName = inputDevice.readLine();
+
+            try (FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
+                for (int i = 0; i < 10; i++) {
+                    int randomNumber = random.nextInt(100); 
+                    String numberString = randomNumber + "\n";
+                    fileOutputStream.write(numberString.getBytes());
+                }
+                break;
+            } catch (IOException e) {
+                outputDevice.write("Error writing to file. Please try another file.\n");
+            }
+        }
+    }
+     */
+}
+public class Mango extends Fruit implements Peelable, SeedRemovable {
+    private boolean isPeeled;
+    private boolean seedsRemoved;
+
+    public Mango(double weight, double sugarContent, double waterContent) {
+        super(weight, sugarContent, waterContent, FruitColor.YELLOW);
+        this.isPeeled = false;
+        this.seedsRemoved = false;
+    }
+
+    @Override
+    public void printFruitDetails() {
+        System.out.println("Mango Details:");
+        System.out.println("Weight: " + getWeight() + " grams");
+        System.out.println("Sugar Content: " + getSugarContent() + "%");
+        System.out.println("Water Content: " + getWaterContent() + "%");
+        System.out.println("Color: " + getColor());
+        System.out.println("Is Peeled: " + (isPeeled ? "Yes" : "No"));
+        System.out.println("Are Seeds Removed: " + (seedsRemoved ? "Yes" : "No"));
+    }
+
+    @Override
+    public boolean hasPeel() {
+        return !isPeeled;
+    }
+
+    @Override
+    public void peelOff() {
+        if (!isPeeled) {
+            System.out.println("Peeling off the mango...");
+            isPeeled = true;
+        } else {
+            System.out.println("The mango is already peeled.");
+        }
+    }
+
+    @Override
+    public boolean hasSeeds() {
+        return !seedsRemoved;
+    }
+
+    @Override
+    public void removeSeeds() {
+        if (!seedsRemoved) {
+            System.out.println("Removing seeds from the mango...");
+            seedsRemoved = true;
+        } else {
+            System.out.println("The seeds have already been removed from the mango.");
+        }
+    }
+}
+public class Banana extends Fruit implements Peelable {
+    private boolean isPeeled;
+
+    public Banana(double weight, double sugarContent, double waterContent) {
+        super(weight, sugarContent, waterContent, FruitColor.YELLOW);
+        this.isPeeled = false;
+    }
+
+    @Override
+    public void printFruitDetails() {
+        System.out.println("Banana Details:");
+        System.out.println("Weight: " + getWeight() + " grams");
+        System.out.println("Sugar Content: " + getSugarContent() + "%");
+        System.out.println("Water Content: " + getWaterContent() + "%");
+        System.out.println("Color: " + getColor());
+        System.out.println("Is Peeled: " + (isPeeled ? "Yes" : "No"));
+    }
+
+    @Override
+    public boolean hasPeel() {
+        return !isPeeled;
+    }
+
+    @Override
+    public void peelOff() {
+        if (!isPeeled) {
+            System.out.println("Peeling off the banana...");
+            isPeeled = true;
+        } else {
+            System.out.println("The banana is already peeled.");
+        }
+    }
+}
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+public class FruitPreparation {
+
+    // Sort fruits by weight
+    public static void sortFruitsByWeight(Fruit[] fruits) {
+        Arrays.sort(fruits);
+        System.out.println("Fruits sorted by weight:");
+        for (Fruit fruit : fruits) {
+            fruit.printFruitDetails();
+        }
+    }
+
+    // Sort fruits by sugar content
+    public static void sortFruitsBySugarContent(Fruit[] fruits) {
+        Arrays.sort(fruits, Comparator.comparingDouble(Fruit::getSugarContent));
+        System.out.println("Fruits sorted by sugar content:");
+        for (Fruit fruit : fruits) {
+            fruit.printFruitDetails();
+        }
+    }
+
+    // Group fruits by color
+    public static void groupFruitsByColor(Fruit[] fruits) {
+        Map<FruitColor, List<Fruit>> groupedByColor = Arrays.stream(fruits)
+                .collect(Collectors.groupingBy(Fruit::getColor));
+
+        System.out.println("Fruits grouped by color:");
+        for (FruitColor color : groupedByColor.keySet()) {
+            System.out.println(color + ":");
+            for (Fruit fruit : groupedByColor.get(color)) {
+                fruit.printFruitDetails();
+            }
+        }
+    }
+}
+abstract class Fruit implements Comparable<Fruit> {
+    private double weight;
+    private double sugarContent;
+    private double waterContent;
+    private FruitColor color;
+
+    public Fruit(double weight, double sugarContent, double waterContent, FruitColor color) {
+        this.weight = weight;
+        this.sugarContent = sugarContent;
+        this.waterContent = waterContent;
+        this.color = color;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public double getSugarContent() {
+        return sugarContent;
+    }
+
+    public double getWaterContent() {
+        return waterContent;
+    }
+
+    public FruitColor getColor() {
+        return color;
+    }
+
+    public abstract void printFruitDetails();
+
+    @Override
+    public int compareTo(Fruit other) {
+        return Double.compare(this.weight, other.weight);
+    }
+}
+public class Apple extends Fruit implements SeedRemovable {
+    private boolean seedsRemoved;
+
+    public Apple(double weight, double sugarContent, double waterContent, FruitColor color) {
+        super(weight, sugarContent, waterContent, color);
+        this.seedsRemoved = false;
+    }
+
+    @Override
+    public void printFruitDetails() {
+        System.out.println("Apple Details:");
+        System.out.println("Weight: " + getWeight() + " grams");
+        System.out.println("Sugar Content: " + getSugarContent() + "%");
+        System.out.println("Water Content: " + getWaterContent() + "%");
+        System.out.println("Color: " + getColor());
+        System.out.println("Are Seeds Removed: " + (seedsRemoved ? "Yes" : "No"));
+    }
+
+    @Override
+    public boolean hasSeeds() {
+        return !seedsRemoved;
+    }
+
+    @Override
+    public void removeSeeds() {
+        if (!seedsRemoved) {
+            System.out.println("Removing seeds from the apple...");
+            seedsRemoved = true;
+        } else {
+            System.out.println("The seeds have already been removed from the apple.");
+        }
+    }
+
+}
