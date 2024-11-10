@@ -6,6 +6,11 @@ This homework project implements a fruit management system with the following ke
 - Clients that can purchase fruits and are sorted by the quantity of fruits they have bought.
 - Sorting and grouping mechanisms for fruits based on weight, sugar content, and color.
 
+# Homework 5 -> File Handling and User Input from Command Line.
+<p align="center"><img alt="HomeWork 5 diagrams" src="hw5.png" /></a></p>
+
+
+
 ## Key Features
 
 ### Comparable Interface Implementation
