@@ -14,8 +14,8 @@ public class Client implements Comparable<Client> {
         return name;
     }
 
-    public int getFruitCount() {
-        return purchasedFruits.size();
+    public List<Fruit> getPurchasedFruits() {
+        return purchasedFruits;
     }
 
     public void buyFruit(Fruit fruit) {
@@ -24,23 +24,19 @@ public class Client implements Comparable<Client> {
 
     public void printClientDetails() {
         System.out.println("=======================================");
-        System.out.printf(" Client: %s | Total Fruits Bought: %d%n", name, getFruitCount());
+        System.out.printf(" Client: %s | Total Fruits Bought: %d%n", name, purchasedFruits.size());
         System.out.println("=======================================");
         
-        // Convert List to Array to use the sortFruitsByWeight method
         Fruit[] fruitsArray = purchasedFruits.toArray(new Fruit[0]);
-
-        // Sort fruits by weight in ascending order
         FruitPreparation.sortFruitsByWeight(fruitsArray);
 
         System.out.println(" Fruits (sorted by weight):");
-            System.out.println("\n------------------------------");
-        System.out.println(); // Adds a blank line between clients for better readability
+        System.out.println("\n------------------------------");
+        System.out.println(); // Adds a blank line between clients for readability
     }
 
     @Override
     public int compareTo(Client other) {
-        // Sort by the number of fruits bought in descending order
-        return Integer.compare(other.getFruitCount(), this.getFruitCount());
+        return Integer.compare(other.purchasedFruits.size(), this.purchasedFruits.size());
     }
 }
